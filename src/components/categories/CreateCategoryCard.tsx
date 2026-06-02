@@ -6,6 +6,7 @@ import { useCreateCategoryMutation } from "@/services/contentApi";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Plus } from "lucide-react";
 
 type ApiErr = { data?: any; status?: number };
 
@@ -24,7 +25,6 @@ export function CreateCategoryCard() {
       toast.error("Category must be at least 2 characters");
       return;
     }
-
     try {
       await createCategory({ category: value }).unwrap();
       toast.success("Category created");
@@ -35,30 +35,29 @@ export function CreateCategoryCard() {
   }
 
   return (
-    <Card>
-      <CardContent className="p-5 space-y-3">
-        <div className="font-medium">Create category</div>
-
+    <Card className="border border-border shadow-sm">
+      <CardContent className="p-5 space-y-4">
+        <div>
+          <h3 className="text-sm font-semibold">New Category</h3>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            Group your questions by topic or technology.
+          </p>
+        </div>
         <div className="flex gap-2">
           <Input
-            placeholder="e.g. React, TypeScript, System Design"
+            placeholder="e.g. React, System Design, Behavioral…"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                onCreate();
-              }
+              if (e.key === "Enter") { e.preventDefault(); onCreate(); }
             }}
+            className="flex-1"
           />
-          <Button onClick={onCreate} disabled={isLoading}>
+          <Button onClick={onCreate} disabled={isLoading} size="sm" className="gap-1.5 shrink-0">
+            <Plus className="h-3.5 w-3.5" />
             Add
           </Button>
         </div>
-
-        <p className="text-xs text-slate-500">
-          Categories are unique per user (409 if you try duplicate).
-        </p>
       </CardContent>
     </Card>
   );
